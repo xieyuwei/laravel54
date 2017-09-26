@@ -76,8 +76,8 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
-    'locale' => 'en',
+//设置语言包
+    'locale' => 'zh',
 
     /*
     |--------------------------------------------------------------------------

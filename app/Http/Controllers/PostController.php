@@ -16,8 +16,8 @@ class PostController extends Controller
 
     }
     // 详情页面
-    public function show(){
-        return view("post/show",['title' => "this is title" , 'isShow' => false]);
+    public function show(Post $post){
+        return view("post/show",compact('post'));
 
     }
     // 创建页面
@@ -27,7 +27,10 @@ class PostController extends Controller
     }
     // 创建逻辑
     public function store(){
-        return;
+        //验证操作
+
+        $post = Post::create(\request(['title','content']));
+        dd($post);
 
     }
     // 编辑页面
