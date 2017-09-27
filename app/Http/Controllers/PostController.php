@@ -28,9 +28,16 @@ class PostController extends Controller
     // 创建逻辑
     public function store(){
         //验证操作
-
+        $this->validate(request(),[
+            'title'=>'required|string|max:100|min:5',
+            'content'=>'required|string|min:10'
+        ],[
+            'title.min' => '自定义提示，文章标题太短了。'
+        ]);
+        //逻辑
         $post = Post::create(\request(['title','content']));
-        dd($post);
+        //渲染
+        return redirect("/posts");
 
     }
     // 编辑页面
