@@ -12,6 +12,8 @@
                 <div class="form-group">
                     <label>内容</label>
                     <textarea id="content"  style="height:400px;max-height:500px;" name="content" class="form-control" placeholder="这里是内容"></textarea>
+
+                    </textarea>
                 </div>
                 @if(count($errors) > 0)
                 <div class="alert alert-danger" role="alert">

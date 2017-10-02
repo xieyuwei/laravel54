@@ -36,6 +36,7 @@ class PostController extends Controller
         ]);
         //逻辑
         $post = Post::create(\request(['title','content']));
+
         //渲染
         return redirect("/posts");
 
@@ -55,4 +56,14 @@ class PostController extends Controller
         return;
 
     }
+    // 图片上传
+    public function imageUpload(Request $request){
+//        dd($request->all());     dd打出来上传文件的名字用于后续操作 (wangEditorH5File)
+        //TODO :md5和time是什么意思呢?
+        //从请求中拿出wangEditorH5File文件储存在public里并重命名，返回的数据在storage目录下找
+        $path = $request->file('wangEditorH5File')->storePublicly(md5(time()));
+        return asset('storage/'.$path);
+
+    }
+
 }
