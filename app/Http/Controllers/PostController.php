@@ -60,13 +60,15 @@ class PostController extends Controller
         $post->content=\request('content');
         $post->save();
 
-        //渲染   TODO为什么这里不需要2个大括号
+        //渲染   TODO:为什么这里不需要2个大括号
         return redirect("/posts/{$post->id}");
 
     }
     // 删除逻辑
-    public function delete(){
-        return;
+    public function delete(Post $post){
+        //TODO:用户权限验证
+        $post->delete();
+        return redirect('/posts');
 
     }
     // 图片上传
