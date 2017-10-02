@@ -42,13 +42,26 @@ class PostController extends Controller
 
     }
     // 编辑页面
-    public function edit(){
-        return view("post/edit");
+    public function edit(Post $post){
+        return view("post/edit", compact('post'));
 
     }
     // 编辑逻辑
-    public function update(){
-        return;
+    public function update(Post $post){
+        //验证操作
+        $this->validate(request(),[
+            'title'=>'required|string|max:100|min:5',
+            'content'=>'required|string|min:10'
+        ],[
+            'title.min' => '自定义提示，文章标题太短了。'
+        ]);
+        //逻辑
+        $post->title=\request('title');
+        $post->content=\request('content');
+        $post->save();
+
+        //渲染   TODO为什么这里不需要2个大括号
+        return redirect("/posts/{$post->id}");
 
     }
     // 删除逻辑
