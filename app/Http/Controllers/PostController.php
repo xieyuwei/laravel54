@@ -15,6 +15,14 @@ class PostController extends Controller
         // compact 创建一个包含变量名和它们的值的数组
 
     }
+//    依赖注入方式
+//    public function index(Illuminate\Http\Request $request){
+//      dd($request->all());
+//    }
+//    门脸模式 (使用根目录下的Request 并且是静态方法 实际上它对应的是config/app.php 中的aliases )
+//    public function index(){
+//      dd(\Request::all());
+//    }
     // 详情页面
     public function show(Post $post){
         return view("post/show",compact('post'));

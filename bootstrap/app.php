@@ -10,7 +10,7 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
-
+//laravel运行周期使用的容器
 $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
@@ -25,7 +25,7 @@ $app = new Illuminate\Foundation\Application(
 | incoming requests to this application from both the web and CLI.
 |
 */
-
+//绑定（bind singleton）      把字符串绑定到对象中去（字符串是放在容器里的，降低耦合度控制反转）
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class

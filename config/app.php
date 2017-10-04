@@ -134,7 +134,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-
+//服务提供者   还有一些服务提供者是写死在框架中的，比如vendor/laravel/framework/src/illuminate/Foundation/Application.php中的registerBaseServiceProviders方法
     'providers' => [
 
         /*
@@ -216,6 +216,7 @@ return [
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
         'Redis' => Illuminate\Support\Facades\Redis::class,
+        //Request对应的门脸类
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,

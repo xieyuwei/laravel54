@@ -32,7 +32,7 @@ require __DIR__.'/../bootstrap/autoload.php';
 | the responses back to the browser and delight our users.
 |
 */
-
+//获取容器
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
@@ -46,7 +46,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 | and wonderful application we have prepared for them.
 |
 */
-
+//解析(make方法)容器用make方法根据字符串Illuminate\Contracts\Http\Kernel::class获取$kernel对象，控制反转
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
