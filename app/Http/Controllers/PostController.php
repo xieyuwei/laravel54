@@ -8,21 +8,47 @@ use App\Post;
 class PostController extends Controller
 {
     // 列表
+实例demoGetLog
+1）容器服务提供
     public function index(){
+        //demoGetLog
+        $app = app();
+        //获取容器
+        $log = $app->make('log');
+        //从容器中获取日志类，使用make方法，需要找到日志类在哪里注册的，字符串是什么(写死在框架里的vendor/laravel/framework/src/illuminate/Foundation/Application.php里找registerBaseServiceProviders里LogServiceProvider,最终找到的字符串是log)(config/app下也有很多服务提供者)
+        $log->info('post_index',['data' => 'this is post index']);
+        //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里（上面的Application.php文件）找 createLogger Writer然后找到对应的很多方法
+        //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
         $posts = Post::orderBy('created_at','desc')->paginate(6);
         return view("post/index", compact('posts'));
         // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
         // compact 创建一个包含变量名和它们的值的数组
-
     }
-//    依赖注入方式
-//    public function index(Illuminate\Http\Request $request){
-//      dd($request->all());
-//    }
-//    门脸模式 (使用根目录下的Request 并且是静态方法 实际上它对应的是config/app.php 中的aliases )
-//    public function index(){
-//      dd(\Request::all());
-//    }
+
+2）依赖注入
+    public function index(\Illuminate\Log\Writer $log){//查看上面的Application.php文件registerCoreContainerAliases方法发现log对应的类可以是3个，随便拿一个出来
+        //demoGetLog
+        $log->info('post_index',['data' => 'this is post index']);
+        //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
+        //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
+        $posts = Post::orderBy('created_at','desc')->paginate(6);
+        return view("post/index", compact('posts'));
+        // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
+        // compact 创建一个包含变量名和它们的值的数组
+    }
+
+3）门脸模式
+    public function index(){
+        //demoGetLog
+        //门脸类到config/app.php aliases里找
+        \Log::info('post_index',['data' => 'this is post index']); //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
+        //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
+        $posts = Post::orderBy('created_at','desc')->paginate(6);
+        return view("post/index", compact('posts'));
+        // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
+        // compact 创建一个包含变量名和它们的值的数组
+    }
+    ----end----
     // 详情页面
     public function show(Post $post){
         return view("post/show",compact('post'));
