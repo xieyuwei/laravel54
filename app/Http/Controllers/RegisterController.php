@@ -18,13 +18,13 @@ class RegisterController extends Controller
         $this->validate(request(),[
             'name' =>'required|min:2|max:40|unique:users,name',
             'email' =>'required|unique:users,email|email',
-            'password' => 'required|min:6|max:15|comfirmed'
+            'password' => 'required|min:6|max:15|confirmed'
         ]);
         //逻辑
         $name = request('name');
         $email = request('email');
         $password = bcrypt(request('password')); //明文加密成密文
-        $user = User::create(compact('name','email','password');
+        $user = User::create(compact('name','email','password'));
         //渲染
         return redirect('/login');
     }

@@ -4,9 +4,9 @@ namespace App;
 
 use App\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
