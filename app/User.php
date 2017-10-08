@@ -3,8 +3,9 @@
 namespace App;
 
 use App\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
 
 
@@ -13,6 +14,7 @@ class User extends Model
      *
      * @var array
      */
+    //extends Authenticatable 没有extends Model， 这些$fillable就要加上去
     protected $fillable = [
         'name', 'email', 'password',
     ];
