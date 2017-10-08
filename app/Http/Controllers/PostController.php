@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -37,7 +38,9 @@ class PostController extends Controller
             'title.min' => '自定义提示，文章标题太短了。'
         ]);
         //逻辑
-        $post = Post::create(\request(['title','content']));
+        $user_id = \Auth::id();
+        $params = array_merge(\request(['title','content']),compact('user_id'));
+        $post = Post::create($params);
 
         //渲染
         return redirect("/posts");
@@ -57,18 +60,20 @@ class PostController extends Controller
         ],[
             'title.min' => '自定义提示，文章标题太短了。'
         ]);
+        //验证权限
+        $this->authorize('update',$post);
         //逻辑
         $post->title=\request('title');
         $post->content=\request('content');
         $post->save();
 
-        //渲染   TODO:为什么这里不需要2个大括号
+        //渲染
         return redirect("/posts/{$post->id}");
 
     }
     // 删除逻辑
     public function delete(Post $post){
-        //TODO:用户权限验证
+        $this->authorize('delete',$post);
         $post->delete();
         return redirect('/posts');
 

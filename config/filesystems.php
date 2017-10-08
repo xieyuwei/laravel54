@@ -12,7 +12,7 @@ return [
     | based disks are available to your application. Just store away!
     |
     */
-//默认驱动改成public
+//默认驱动改成public command:php artisan storage:link  上传图片
     'default' => env('FILESYSTEM_DRIVER', 'public'),
 
     /*
