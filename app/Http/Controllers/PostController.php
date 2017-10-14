@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use Illuminate\Http\Request;
 use App\Post;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,14 @@ class PostController extends Controller
 //        demoGetLog
         \Log::info('post_index',['data' => 'this is post index']); //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
         //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
-        $posts = Post::orderBy('created_at','desc')->paginate(6);
+        $posts = Post::orderBy('created_at','desc')->withCount('comments')->paginate(6);
         return view("post/index", compact('posts'));
         // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
         // compact 创建一个包含变量名和它们的值的数组
     }
     // 详情页面
     public function show(Post $post){
+        $post->load('comments');//在控制器里预加载comments 数据库查询的工作不要丢给view层去做
         return view("post/show",compact('post'));
 
     }
@@ -85,6 +87,22 @@ class PostController extends Controller
         //从请求中拿出wangEditorH5File文件储存在public里并重命名，返回的数据在storage目录下找
         $path = $request->file('wangEditorH5File')->storePublicly(md5(time()));
         return asset('storage/'.$path);
+
+    }
+//提交评论
+    public function comment(Post $post){
+        $this->validate(request(),[
+            'content' => 'required|min:3',
+        ]);
+
+        //逻辑
+        $comment = new Comment();
+        $comment->user_id = Auth::id();
+        $comment->content = request('content');
+        $post->comments()->save($comment);
+
+        //渲染
+        return back();
 
     }
 
