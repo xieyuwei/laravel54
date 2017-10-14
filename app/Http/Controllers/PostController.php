@@ -15,7 +15,7 @@ class PostController extends Controller
         //  demoGetLog
         \Log::info('post_index',['data' => 'this is post index']); //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
         //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
-        $posts = Post::orderBy('created_at','desc')->withCount('comments')->paginate(6);
+        $posts = Post::orderBy('created_at','desc')->withCount('comments','zans')->paginate(6);
         return view("post/index", compact('posts'));
         // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
         // compact 创建一个包含变量名和它们的值的数组
@@ -113,7 +113,7 @@ class PostController extends Controller
         ];
         //查找数据库如果有这条数据就查询，没有就创建，不会重复创建数据
         Zan::firstOrCreate($param);
-        //TODO:因为是使用get方式，链接的形式，那直接使用back可以回退到上一个页面了？？什么意思？？上面提交评论是post用的也是back函数啊
+        //TODO:因为是使用get方式，链接的形式，那直接使用back可以回退到上一个页面了？？什么意思？？上面提交评论是post用的也是back函数啊(很奇怪route里写post方法点赞就会报错)
         return back();
     }
     //取消赞
