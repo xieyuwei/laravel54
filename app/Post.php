@@ -4,7 +4,7 @@ namespace App;
 
 use App\Model;
 
-
+use Laravel\Scout\Searchable;
 class Post extends Model
     {
         //    protected $guarded = [];//不可以注入的字段
@@ -13,6 +13,20 @@ class Post extends Model
         //    如果什么都不写 ，对应的表就是posts
         //    如果不对应posts,就要指定他的table属性
         //    protected $table = "post2";
+    use searchable;
+
+    //定义索引里的type
+    public function searchableAs(){
+        return 'post';
+    }
+
+    //定义有哪些字段需要搜索
+    public function toSearchableArray(){
+        return [
+          'title' => $this->title,
+          'content' => $this->content,
+        ];
+    }
 
     //关联用户Eloquent ORM模型关联
         //    TODO: 下面的评论模型完成了一对多和一对多反向，为什么这个不需要相互关联呢？

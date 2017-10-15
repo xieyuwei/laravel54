@@ -123,5 +123,18 @@ class PostController extends Controller
         return back();
 
     }
+    //搜索结果页
+    public function search(){
+        //验证
+        $this->validate(\request(),[
+            'query' => 'required'
+        ]);
+        //逻辑
+        $query = \request('query');
+        //TODO：这里的search到底在执行哪里的方法（scout的好处：让我们像使用model一样使用搜索引擎，所以这个search方法是scout的么？）  这里为什么必须是$posts compact里也必须传posts $post和传post就不行
+        $posts = Post::search($query)->paginate(2);
+        //渲染
+        return view('/post/search',compact('posts','query'));
+    }
 
 }

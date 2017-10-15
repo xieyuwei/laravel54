@@ -31,6 +31,8 @@ Route::post('/user/me/setting','UserController@settingStore');
 Route::get('/posts','PostController@index');
 //创建文章页
 Route::get('/posts/create','PostController@create');
+//搜索
+Route::get('/posts/search','PostController@search');
 //文章详情页
 Route::get('/posts/{post}','PostController@show');
 //创建文章逻辑
@@ -49,3 +51,4 @@ Route::post('/posts/{post}/comment','PostController@comment');
 Route::get('/posts/{post}/zan','PostController@zan');
 //取消赞
 Route::get('/posts/{post}/unzan','PostController@unzan');
+
