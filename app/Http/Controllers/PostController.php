@@ -16,19 +16,19 @@ class PostController extends Controller
         \Log::info('post_index',['data' => 'this is post index']); //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
         //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
         $posts = Post::orderBy('created_at','desc')->withCount('comments','zans')->paginate(6);
-        return view("post/index", compact('posts'));
+        return view("post.index", compact('posts'));
         // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
         // compact 创建一个包含变量名和它们的值的数组
     }
     // 详情页面
     public function show(Post $post){
         $post->load('comments');//在控制器里预加载comments 数据库查询的工作不要丢给view层去做
-        return view("post/show",compact('post'));
+        return view("post.show",compact('post'));
 
     }
     // 创建页面
     public function create(){
-        return view("post/create");
+        return view("post.create");
 
     }
     // 创建逻辑
@@ -46,12 +46,14 @@ class PostController extends Controller
         $post = Post::create($params);
 
         //渲染
-        return redirect("/posts");
+//        return redirect("posts");
+        return redirect()->route('posts');
+
 
     }
     // 编辑页面
     public function edit(Post $post){
-        return view("post/edit", compact('post'));
+        return view("post.edit", compact('post'));
 
     }
     // 编辑逻辑
@@ -71,14 +73,18 @@ class PostController extends Controller
         $post->save();
 
         //渲染
-        return redirect("/posts/{$post->id}");
+//        return redirect("posts.get.edit");
+        return redirect()->route('posts.get.edit');
+
 
     }
     // 删除逻辑
     public function delete(Post $post){
         $this->authorize('delete',$post);
         $post->delete();
-        return redirect('/posts');
+//        return redirect('posts');
+        return redirect()->route('posts');
+
 
     }
     // 图片上传
@@ -103,7 +109,10 @@ class PostController extends Controller
         $post->comments()->save($comment);
 
         //渲染
-        return back();
+//        return redirect('post.show');
+        return redirect()->route('post.show',['post' => $post->id]);
+
+//        return back();
     }
     //赞
     public function zan(Post $post){
@@ -113,15 +122,17 @@ class PostController extends Controller
         ];
         //查找数据库如果有这条数据就查询，没有就创建，不会重复创建数据
         Zan::firstOrCreate($param);
-        //TODO:因为是使用get方式，链接的形式，那直接使用back可以回退到上一个页面了？？什么意思？？上面提交评论是post用的也是back函数啊(很奇怪route里写post方法点赞就会报错)
-        return back();
+//        return View::make('post.show');
+//        return redirect('post.show');
+        return redirect()->route('post.show',['post' => $post->id]);
+//        return back();
     }
     //取消赞
     public function unzan(Post $post){
-        //TODO: 这里为什么是把赞 delete了呢？ 看起来像是把文章delete了一样
         $post->zan(Auth::id())->delete();
-        return back();
-
+//        return redirect('post.show');
+        return redirect()->route('post.show',['post' => $post->id]);
+//        return back();
     }
     //搜索结果页
     public function search(){
@@ -131,10 +142,9 @@ class PostController extends Controller
         ]);
         //逻辑
         $query = \request('query');
-        //TODO：这里的search到底在执行哪里的方法（scout的好处：让我们像使用model一样使用搜索引擎，所以这个search方法是scout的么？）  这里为什么必须是$posts compact里也必须传posts $post和传post就不行
         $posts = Post::search($query)->paginate(2);
         //渲染
-        return view('/post/search',compact('posts','query'));
+        return view('post.search',compact('posts','query'));
     }
 
 }
