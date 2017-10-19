@@ -2,7 +2,7 @@
 2) create database & .env file , change .env file settings to your local setting
 3) php artisan key:generate
 4) make migrate
-5) download elasticsearch-rtf from http://pan.baidu.com/s/1eS1sjsu
+5) download elasticsearch-rtf (JDK 8+ needed) from http://pan.baidu.com/s/1bptqODh
 6) unzip it and cd elasticsearch-rtf-master
 7) bin/elasticsearch -d
 8) make run
