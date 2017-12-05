@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+//use App\Model 控制器里可以直接使用create方法（例如：register controller）
 use App\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 

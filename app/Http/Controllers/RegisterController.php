@@ -24,7 +24,7 @@ class RegisterController extends Controller
         $name = request('name');
         $email = request('email');
         $password = bcrypt(request('password')); //明文加密成密文
-        $user = User::create(compact('name','email','password'));
+        $user = User::create(compact('name','email','password'));// user模型里使用了use App\Model 这里可直接使用create方法
         //渲染
         return redirect()->route('login');
     }
