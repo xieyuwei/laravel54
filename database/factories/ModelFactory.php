@@ -27,6 +27,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
      return [
          'title' => $faker->sentence(6),
-         'content' => $faker->paragraph(10)
+         'content' => $faker->paragraph(10),
+         'user_id' => rand(1,4),
      ];
+     //假数据
+     //php artisan tinker
+     //factory(App\Post::class,5)->create();
  });

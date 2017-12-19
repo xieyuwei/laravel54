@@ -26,6 +26,47 @@
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <![endif]-->
+  <script>
+    $('.like-button').ready(function () {
+      $('.like-button').click(function (event) {
+        var target = $(event.target);
+        var current_like = target.attr('like-value');
+        var user_id = target.attr('like-user');
+        if (current_like == 1){
+          //取消关注
+          $.ajax({
+            url: "/user/" + user_id + "/unfan",
+            method: 'POST',
+            dataType: 'json',
+            success: function (data) {
+              if (data.error != 0){
+                alert(data.msg);
+                return;
+              }
+              target.attr('like-value',0);
+              target.text("关注");
+            }
+          })
+        }else {
+          //关注
+          $.ajax({
+            url: "/user/" + user_id + "/fan",
+            method: 'POST',
+            dataType: 'json',
+            success: function (data) {
+              if (data.error != 0){
+                alert(data.msg);
+                return;
+              }
+              target.attr('like-value',1);
+              target.text("取消关注");
+            }
+          })
+        }
+      })
+    })
+
+  </script>
 </head>
 
 <body>
@@ -44,12 +85,19 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript">
-        var editor = new wangEditor('content');
-        editor.config.uploadImgUrl='/posts/image/upload';
-        editor.config.uploadHeaders={
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        };
-        editor.create();
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      var editor = new wangEditor('content');
+      editor.config.uploadImgUrl = '/posts/image/upload';
+      //设置headers
+      editor.config.uploadHeaders = {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      };
+      editor.create();
     </script>
 </body>
 </html>

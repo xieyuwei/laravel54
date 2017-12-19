@@ -31,7 +31,7 @@ Route::group(['prefix' => '/'], function () {
 
 
 Route::group(['prefix' => 'posts','middleware' => 'auth'], function () {
-
+    
     Route::get('/', ['as' => 'posts', 'uses' => 'PostController@index']);
     Route::get('create', ['as' => 'posts.get.create',  'uses' => 'PostController@create']);
 
@@ -47,6 +47,14 @@ Route::group(['prefix' => 'posts','middleware' => 'auth'], function () {
 
     Route::get('{post}/zan', ['as' => 'posts.zan',  'uses' => 'PostController@zan']);
     Route::get('{post}/unzan', ['as' => 'posts.unzan',  'uses' => 'PostController@unzan']);
+});
+
+Route::group(['prefix' => 'user','middleware' => 'auth'], function () {
+
+    Route::get('{user}', ['as' => 'user', 'uses' => 'UserController@show']);//TODO:怎么确保是当前用户？在url那里ID改成别人的也可以访问，不合理的
+    Route::post('{user}/fan', ['as' => 'doFan', 'uses' => 'UserController@fan']);
+    Route::post('{user}/unfan', ['as' => 'doUnfan', 'uses' => 'UserController@unfan']);
+
 });
 ////文章模块
 ////文章列表页

@@ -29,7 +29,6 @@ class Post extends Model
     }
 
     //关联用户Eloquent ORM模型关联
-        //    TODO: 下面的评论模型完成了一对多和一对多反向，为什么这个不需要相互关联呢？
     public function user(){
         return $this->belongsTo('App\User');
       }
@@ -38,14 +37,14 @@ class Post extends Model
         //asc是指定列按升序排列，desc则是指定列按降序排列
         return $this->hasMany('App\Comment')->orderBy('created_at','desc');
     }
-        //TODO：看一下zan和zans具体使用时的区别
+        //TODO：看一下zan和zans具体使用时的区别？ 在postController里withCount用的是comments和zans，页面中直接用zans_count获取到
     //和赞、用户关联  文章对某用户而言是否有赞
     public function zan($user_id){
         //一篇文章和一个用户只能产生一个赞
-        return $this->hasOne(\App\Zan::class)->where('user_id',$user_id);
+        return $this->hasOne('App\Zan')->where('user_id',$user_id);
     }
     //文章总赞数
     public function zans(){
-        return $this->hasMany(\App\Zan::class);
+        return $this->hasMany('App\Zan');
     }
 }

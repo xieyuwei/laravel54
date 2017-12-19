@@ -25,13 +25,12 @@
             <li class="dropdown">
                 <div>
                     {{--<img src="" alt="" class="img-rounded" style="border-radius:500px; height: 30px">--}}
-                    {{--TODO为什么这里总会出问题Trying to get property of non-object 写死后登出再登录就行--}}
                     <a href="#" class="blog-nav-item dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">{{\Illuminate\Support\Facades\Auth::user()->name}}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/5">我的主页</a></li>
-                        <li><a href="/user/5/setting">个人设置</a></li>
+                        <li><a href="/user/{{\Illuminate\Support\Facades\Auth::id()}}">我的主页</a></li>
+                        <li><a href="/user/{{\Illuminate\Support\Facades\Auth::id()}}/setting">个人设置</a></li>
                         <li><a href="/logout">登出</a></li>
                     </ul>
                 </div>

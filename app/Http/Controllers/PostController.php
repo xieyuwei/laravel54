@@ -12,6 +12,11 @@ class PostController extends Controller
 {
     //  列表
     public function index(){
+//        $user = Auth::user();
+//
+//        $user->doFan(2);
+//
+//        dd($user);
         //  demoGetLog
         \Log::info('post_index',['data' => 'this is post index']); //现在可以使用log的方法了， 例如info() ,但是log都有哪些方法呢？ 到log provider里找 createLogger Writer然后找到对应的很多方法
         //最后从控制台用命令行tail -f storage/logs/laravel.log 查看 ，一旦访问index页面就会打出log
@@ -20,17 +25,20 @@ class PostController extends Controller
         // view有两个参数 第一个参数是模板相对地址 第二个参数是数组，传给模板的变量有哪些
         // compact 创建一个包含变量名和它们的值的数组
     }
+
     // 详情页面
     public function show(Post $post){
         $post->load('comments');//在控制器里预加载comments 数据库查询的工作不要丢给view层去做
         return view("post.show",compact('post'));
 
     }
+
     // 创建页面
     public function create(){
         return view("post.create");
 
     }
+
     // 创建逻辑
     public function store(){
         //验证操作
@@ -48,14 +56,14 @@ class PostController extends Controller
         //渲染
 //        return redirect("posts");
         return redirect()->route('posts');
-
-
     }
+
     // 编辑页面
     public function edit(Post $post){
         return view("post.edit", compact('post'));
 
     }
+
     // 编辑逻辑
     public function update(Post $post){
         //验证操作
@@ -75,18 +83,16 @@ class PostController extends Controller
         //渲染
 //        return redirect("posts.get.edit");
         return redirect()->route('posts.get.edit');
-
-
     }
+
     // 删除逻辑
     public function delete(Post $post){
         $this->authorize('delete',$post);
         $post->delete();
 //        return redirect('posts');
         return redirect()->route('posts');
-
-
     }
+
     // 图片上传
     public function imageUpload(Request $request){
         //  dd($request->all());     dd打出来上传文件的名字用于后续操作 (wangEditorH5File)
@@ -96,6 +102,7 @@ class PostController extends Controller
         return asset('storage/'.$path);
 
     }
+
     //提交评论
     public function comment(Post $post){
         //验证
@@ -111,9 +118,9 @@ class PostController extends Controller
         //渲染
 //        return redirect('post.show');
         return redirect()->route('post.show',['post' => $post->id]);
-
 //        return back();
     }
+
     //赞
     public function zan(Post $post){
         $param = [
@@ -127,6 +134,7 @@ class PostController extends Controller
         return redirect()->route('post.show',['post' => $post->id]);
 //        return back();
     }
+
     //取消赞
     public function unzan(Post $post){
         $post->zan(Auth::id())->delete();
@@ -134,6 +142,7 @@ class PostController extends Controller
         return redirect()->route('post.show',['post' => $post->id]);
 //        return back();
     }
+
     //搜索结果页
     public function search(){
         //验证
@@ -146,5 +155,4 @@ class PostController extends Controller
         //渲染
         return view('post.search',compact('posts','query'));
     }
-
 }
