@@ -29,9 +29,7 @@ Route::group(['prefix' => '/'], function () {
     });
 });
 
-
 Route::group(['prefix' => 'posts','middleware' => 'auth'], function () {
-    
     Route::get('/', ['as' => 'posts', 'uses' => 'PostController@index']);
     Route::get('create', ['as' => 'posts.get.create',  'uses' => 'PostController@create']);
 
@@ -50,50 +48,12 @@ Route::group(['prefix' => 'posts','middleware' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth'], function () {
-
-    Route::get('{user}', ['as' => 'user', 'uses' => 'UserController@show']);//TODO:怎么确保是当前用户？在url那里ID改成别人的也可以访问，不合理的
+    Route::get('{user}', ['as' => 'user', 'uses' => 'UserController@show']);
     Route::post('{user}/fan', ['as' => 'doFan', 'uses' => 'UserController@fan']);
     Route::post('{user}/unfan', ['as' => 'doUnfan', 'uses' => 'UserController@unfan']);
-
 });
-////文章模块
-////文章列表页
-//Route::get('/posts','PostController@index')->middleware('auth');
-////创建文章页
-//Route::get('/posts/create','PostController@create');
-////搜索
-//Route::get('/posts/search','PostController@search');
-////文章详情页
-//Route::get('/posts/{post}','PostController@show');
-////创建文章逻辑
-//Route::post('/posts','PostController@store');//虽然和第一个URL都是posts 但是用的方法（POST GET）不同，所以不冲突
-////编辑文章
-//Route::get('/posts/{post}/edit','PostController@edit');
-////编辑文章逻辑
-//Route::put('/posts/{post}','PostController@update');
-////删除文章
-//Route::get('/posts/{post}/delete','PostController@delete');
-////图片上传
-//Route::post('/posts/image/upload','PostController@imageUpload');
-////提交评论
-//Route::post('/posts/{post}/comment','PostController@comment');
-////赞
-//Route::get('/posts/{post}/zan','PostController@zan');
-////取消赞
-//Route::get('/posts/{post}/unzan','PostController@unzan');
 
-////用户模块
-////注册页面
-//Route::get('/register','RegisterController@index');
-////注册行为
-//Route::post('/register','RegisterController@register');
-////登陆页面
-//Route::get('/login','LoginController@index')->name('login');
-////登陆行为
-//Route::post('/login','LoginController@login');
-////登出行为
-//Route::get('/logout','LoginController@logout');
-////个人设置页面
-//Route::get('/user/me/setting','UserController@setting');
-////个人设置行为
-//Route::post('/user/me/setting','UserController@settingStore');
+Route::group(['prefix' => 'topic','middleware' => 'auth'], function () {
+    Route::get('{topic}', ['as' => 'show.topic', 'uses' => 'TopicController@show']);
+    Route::post('{topic}/submit', ['as' => 'submit.topic', 'uses' => 'TopicController@submit']);
+});

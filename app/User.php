@@ -27,18 +27,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    //用户的文章列表
+    //用户的文章列表 UserController里withCount用到了
     public function posts(){
         //要填posts表里对应的外键是什么   3个参数 要关联的对象，对象的外键，当前模型的主键
         return $this->hasMany('App\Post','user_id','id');
     }
 
-    //关注我的Fan模型
+    //关注我的Fan模型 UserController里withCount用到了
     public function fans(){
         return $this->hasMany('App\Fan','star_id','id');
     }
 
-    //我关注的Fan模型
+    //我关注的Fan模型 UserController里withCount用到了
     public function stars(){
         //我关注的。代表我是粉丝。fan_id一定是我当前用户，所以用fayne 画的表可以很好的理解
         return $this->hasMany('App\Fan','fan_id','id');
@@ -50,6 +50,7 @@ class User extends Authenticatable
         $fan->star_id = $uid;
         return $this->stars()->save($fan);//因为调用了楼上的stars()方法，从我关注的Fan模型里增加一个保存信息，所以save
     }
+
     //取消关注
     public function doUnFan($uid){
         $fan = new \App\Fan();
